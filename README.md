@@ -47,7 +47,7 @@ project-root/
 │   │   ├── rename.py
 │   │   └── append_to_csv.py
 │   │
-│   ├── mask_generator/
+│   └── mask_generator/
 │       ├── py1.py
 │       ├── py2.py
 │       ├── py3.py
