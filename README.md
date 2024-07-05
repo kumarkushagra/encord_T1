@@ -30,3 +30,35 @@ Contains all the datasets and their respective paths.
 - **Mask dir**: Directory containing mask files.
 
 - **mapping.csv**: CSV file containing all the mappings related to the datasets.
+
+## Directory Structure
+
+The directory structure for this repository should be organized as follows:
+
+```
+project-root/
+│
+├── json file
+├── main.py
+│
+├── functions/
+│   ├── download/
+│   │   ├── download.py
+│   │   ├── rename.py
+│   │   └── append_to_csv.py
+│   │
+│   ├── mask_generator/
+│       ├── py1.py
+│       ├── py2.py
+│       ├── py3.py
+│       └── to_be_continued/
+│   
+│
+├── dataset/
+│   ├── download_path/
+│   │   ├── dicom_files_dir/
+│   │   ├── dicom_to_jpg_files_dir/
+│   │   └── mask_dir/
+│   │
+│   └── mapping.csv
+```
