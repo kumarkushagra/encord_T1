@@ -4,7 +4,7 @@ import cv2
 
 from load_json_data import load_json_data
 from create_mask import process_annotations
-from download import download
+from download import *
 
 
 
@@ -19,6 +19,7 @@ def main(json_path, Mask_directory):
     # Iterating though each study
     DCM_dir="D:/PROJECT/encord_T1/dataset/DCM files/"
     mask_dir = f"D:/PROJECT/encord_T1/dataset/mask/"
+    jpg_dir = f"D:/PROJECT/encord_T1/dataset/JPG files/"
     for study in data:
         # ENTERING The nested dictionary inside 'data_units' (dict that contains info about all slices + metadata)
         for data_units in study['data_units'].values():
@@ -32,34 +33,34 @@ def main(json_path, Mask_directory):
 
                 ''' DCM file name ready'''
                 uri = instance['metadata']['file_uri']
-                dcm_name = study['data_title']
-                dcm_name += f"_{key}.dcm"
+                study_name = study['data_title']
+                dcm_name = f"{study_name}_{key}.dcm"
+                jpg_name = f"{study_name}_{key}.jpg"
                 dcm_name = f"{DCM_dir}{dcm_name}"
-                download(uri,DCM_dir,dcm_name)
-                break
-
-
-
-                ####### Downloading MASK (if exists)
-                # if not objects:
-                #     continue
-                # elif objects:
-                #     mask_name = study['data_title']
-                #     mask_name += f"_{key}.jpg"
-                #     process_annotations(image,objects)
-                #     # Pass this object to process annotations function
-
-                #     # SAVE the image (specify directory path)
-                #     mask_path_temp = f"{mask_dir}{mask_name}.jpg"
-                #     cv2.imwrite(mask_path_temp, image)
-
-
-
-                #     # # Display the result image
-                #     # cv2.imshow('Result', image)
-                #     # cv2.waitKey(0)
-                #     # cv2.destroyAllWindows()
+                # Downloading here
+                download(uri, DCM_dir, dcm_name, jpg_dir, jpg_name)
                 
+
+                ###### Downloading MASK (if exists)
+                if not objects:
+                    continue
+                elif objects:
+                    mask_name = study['data_title']
+                    mask_name += f"_{key}.jpg"
+                    process_annotations(image,objects)
+                    # Pass this object to process annotations function
+
+                    # SAVE the image (specify directory path)
+                    mask_path_temp = f"{mask_dir}{mask_name}"
+                    cv2.imwrite(mask_path_temp, image)
+
+
+
+                    # # Display the result image
+                    # cv2.imshow('Result', image)
+                    # cv2.waitKey(0)
+                    # cv2.destroyAllWindows()
+        
 
 
 
