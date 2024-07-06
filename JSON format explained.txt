@@ -1,0 +1,43 @@
+json file contains a list of dictionaries
+
+[{S1}, {S2}, {S3}, ....., {Sn}]
+
+each dict is a study
+
+
+
+
+Inside each dict, there are 21 keys:-
+
+'label_hash',
+'branch_name',
+'created_at',
+'last_edited_at',
+'dataset_hash',
+'dataset_title',
+'data_title',
+'data_hash',
+'data_type',
+'is_image_sequence',
+'video_link',
+'data_units',
+'object_answers',
+'classification_answers',
+'object_actions',
+'label_status',
+'is_valid',
+'annotation_task_status',
+'export_hash',
+'exported_at',
+'export_history'
+
+
+
+
+
+
+'data_units' corresponds to a dict
+        # key: UNIQUE ID for a series
+        # value: list of dicts, each dict contains data about a series
+
+value is another dict acually containing info about each slice of respective study
