@@ -1,11 +1,13 @@
 import numpy as np
 import json 
 import cv2
+import csv
+import os
 
 from load_json_data import load_json_data
 from create_mask import process_annotations
 from download import *
-
+from update_CSV import append_row_to_csv
 
 
 
@@ -15,14 +17,27 @@ def main(json_path, Mask_directory):
     # READ JSON FILE
     data = load_json_data(json_path) 
     # data is a list containing 10 dictionaries, each dict contains data about each study
+    csv_file = "D:/PROJECT/encord_T1/dataset/record.csv"
+    if not os.path.exists(csv_file):
+        with open(csv_file, 'w', newline='') as file:
+            csv.writer(file).writerow(["name", "Dicom path", "JPG path", "Annotations Found" ,"Bleed status", "mask path", "Fracture status", "Fracture Coordinates"])  # Create file with an empty row
+
 
     # Iterating though each study
     DCM_dir="D:/PROJECT/encord_T1/dataset/DCM files/"
+    os.makedirs(DCM_dir, exist_ok=True)
     mask_dir = f"D:/PROJECT/encord_T1/dataset/mask/"
+    os.makedirs(mask_dir, exist_ok=True)
     jpg_dir = f"D:/PROJECT/encord_T1/dataset/JPG files/"
+    os.makedirs(jpg_dir, exist_ok=True)
+    
     for study in data:
+        record = [""]*8
+
         # ENTERING The nested dictionary inside 'data_units' (dict that contains info about all slices + metadata)
         for data_units in study['data_units'].values():
+            name = data_units["data_title"]
+            record[0]=name
             # Iterating through labels dict (dict that contains info about each slice ONLY)
             for key,instance in data_units['labels'].items():
                 image = np.zeros((512, 512, 3), dtype=np.uint8)
@@ -39,12 +54,25 @@ def main(json_path, Mask_directory):
                 dcm_name = f"{DCM_dir}{dcm_name}"
                 # Downloading here
                 download(uri, DCM_dir, dcm_name, jpg_dir, jpg_name)
+                record[1]=dcm_name
+                record[2]=jpg_name
                 
+
+                for annotation in objects:
+                    if annotation["name"]=="Bleed":
+                        record[4]="True"
+                    elif annotation["name"]=="Fracture":
+                        record[6]="True"
+                        record[7]=list(annotation["boundingBox"].items())
 
                 ###### Downloading MASK (if exists)
                 if not objects:
-                    continue
+                    record[3]="No"
+                    record[4]="False"
+                    record[6]="False"
+                    
                 elif objects:
+                    record[3]="Yes"
                     mask_name = study['data_title']
                     mask_name += f"_{key}.jpg"
                     process_annotations(image,objects)
@@ -52,7 +80,13 @@ def main(json_path, Mask_directory):
 
                     # SAVE the image (specify directory path)
                     mask_path_temp = f"{mask_dir}{mask_name}"
+                    record[5]=mask_path_temp
                     cv2.imwrite(mask_path_temp, image)
+
+                
+                append_row_to_csv(csv_file,record)
+                break
+
 
 
 
@@ -60,7 +94,7 @@ def main(json_path, Mask_directory):
                     # cv2.imshow('Result', image)
                     # cv2.waitKey(0)
                     # cv2.destroyAllWindows()
-        
+        break
 
 
 
