@@ -10,7 +10,7 @@ def append_row_to_csv(file_path, row_array):
         writer = csv.writer(file)
         writer.writerow(row_array)
 
-    print("Row appended successfully.")
+
 
 # Example usage:
 if __name__=="__main__":
