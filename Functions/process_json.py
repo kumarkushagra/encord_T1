@@ -13,22 +13,23 @@ from update_CSV import append_row_to_csv
 
 
 
-def main(json_path, Mask_directory):
+def main(json_path,dataset_dir):
     # READ JSON FILE
+    os.makedirs(dataset_dir, exist_ok=True)
     data = load_json_data(json_path) 
     # data is a list containing 10 dictionaries, each dict contains data about each study
-    csv_file = "D:/PROJECT/encord_T1/dataset/record.csv"
+    csv_file = f"{dataset_dir}/record.csv"
     if not os.path.exists(csv_file):
         with open(csv_file, 'w', newline='') as file:
             csv.writer(file).writerow(["name", "Dicom path", "JPG path", "Annotations Found" ,"Bleed status", "mask path", "Fracture status", "Fracture Coordinates"])  # Create file with an empty row
 
 
     # Iterating though each study
-    DCM_dir="D:/PROJECT/encord_T1/dataset/DCM files/"
+    DCM_dir= f"{dataset_dir}/DCM files/"
     os.makedirs(DCM_dir, exist_ok=True)
-    mask_dir = f"D:/PROJECT/encord_T1/dataset/mask/"
+    mask_dir = f"{dataset_dir}/mask/"
     os.makedirs(mask_dir, exist_ok=True)
-    jpg_dir = f"D:/PROJECT/encord_T1/dataset/JPG files/"
+    jpg_dir = f"{dataset_dir}/JPG files/"
     os.makedirs(jpg_dir, exist_ok=True)
     
     for study in data:
@@ -102,5 +103,5 @@ def main(json_path, Mask_directory):
 if __name__=="__main__":
     json_path = "D:/PROJECT/encord_T1/signed_Data.json"
     # base_image_directory = to be done after downlaod functionloty is ready
-    Mask_directory = "D:/PROJECT/encord_T1/dataset/mask/overlay/"
-    main(json_path, Mask_directory)
+    dataset_dir = "D:/PROJECT/encord_T1/dataset"
+    main(json_path, dataset_dir)
