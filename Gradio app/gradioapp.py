@@ -6,6 +6,8 @@ from PIL import Image
 left_image_dir = r"D:\Panacea\Encord\encord_T1\dataset\JPG files"
 right_image_dir = r"D:\Panacea\Encord\encord_T1\dataset\mask"
 
+#This is the basic structure of gradio app
+
 # Get a sorted list of image file paths for each directory
 left_image_files = sorted([os.path.join(left_image_dir, img) for img in os.listdir(left_image_dir) if img.endswith(('png', 'jpg', 'jpeg'))])
 right_image_files = sorted([os.path.join(right_image_dir, img) for img in os.listdir(right_image_dir) if img.endswith(('png', 'jpg', 'jpeg'))])
