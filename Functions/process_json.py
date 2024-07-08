@@ -18,7 +18,7 @@ def main(json_path,dataset_dir):
     os.makedirs(dataset_dir, exist_ok=True)
     data = load_json_data(json_path) 
     # data is a list containing 10 dictionaries, each dict contains data about each study
-    csv_file = f"{dataset_dir}/dataset/record.csv"
+    csv_file = f"{dataset_dir}/record.csv"
     if not os.path.exists(csv_file):
         with open(csv_file, 'w', newline='') as file:
             csv.writer(file).writerow(["name", "Dicom path", "JPG path", "Annotations Found" ,"Bleed status", "mask path", "Fracture status", "Fracture Coordinates"])  # Create file with an empty row
@@ -38,7 +38,7 @@ def main(json_path,dataset_dir):
         # ENTERING The nested dictionary inside 'data_units' (dict that contains info about all slices + metadata)
         for data_units in study['data_units'].values():
             name = data_units["data_title"]
-            record[0]=name
+            record[0]=f"{name}_{key}"
 
             """
             GENERATING A url ARRAY FOR PARELLEL DOWNLOADING
@@ -96,7 +96,7 @@ def main(json_path,dataset_dir):
                 
                 append_row_to_csv(csv_file,record)
                 print(f"saved file: {name}_{key}")
-                break
+                
 
 
 
@@ -105,7 +105,7 @@ def main(json_path,dataset_dir):
                     # cv2.imshow('Result', image)
                     # cv2.waitKey(0)
                     # cv2.destroyAllWindows()
-        break
+        
 
 
 
