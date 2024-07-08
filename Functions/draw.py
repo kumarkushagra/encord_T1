@@ -8,7 +8,7 @@ def draw_bitmask(image, color, rle_string):
     # Decode RLE string to binary mask
     rle = {"counts": rle_string, "size": [image.shape[0], image.shape[1]]}
     mask = maskUtils.decode(rle)
-    alpha = 1  # Transparency for the bitmask
+    alpha = 0.9  # Transparency for the bitmask
 
     # Ensure the color is in the correct format (B, G, R)
     color = tuple(int(c) for c in color)
@@ -17,14 +17,10 @@ def draw_bitmask(image, color, rle_string):
     overlay = np.zeros_like(image, dtype=np.uint8)
     overlay[mask == 1] = color
 
-    # Rotate the overlay by 90 degrees to the right
-    overlay = cv2.rotate(overlay, cv2.ROTATE_90_COUNTERCLOCKWISE)
-
-    # Adjust the mask indices to match the rotated overlay
-    mask = cv2.rotate(mask, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    # Create a mask where the overlay is applied
     mask_indices = mask == 1
-    
-    # Blend only the rotated overlay with the original image
+
+    # Blend only the overlay with the original image
     image[mask_indices] = cv2.addWeighted(overlay[mask_indices], alpha, image[mask_indices], 1 - alpha, 0)
     return image
 
