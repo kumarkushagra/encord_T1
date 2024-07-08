@@ -82,9 +82,11 @@ def main(json_path, dataset_dir):
                         cv2.imwrite(mask_path_temp, image)
 
                     append_row_to_csv(csv_file, record)
-                    print(f"downloading file: {name}_{key}")
+                    print(f"started downloading file: {name}_{key}")
 
         # Ensure all downloads are completed
+        print("Masks are ready")
+        print("Please wait, your files are downloading......")
         concurrent.futures.wait(futures)
         print("\n\nDOWNLOAD COMPLETE\n\n")
 
