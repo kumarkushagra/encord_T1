@@ -130,3 +130,24 @@ if __name__ == "__main__":
     cv2.imshow('Result', image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+############ Orignal bitmask function, find out the reason for error ##################
+# def draw_bitmask(image, color, rle_string):
+#     # Decode RLE string to binary mask
+#     rle = {"counts": rle_string, "size": [image.shape[0], image.shape[1]]}
+#     mask = maskUtils.decode(rle)
+#     alpha = 0.9  # Transparency for the bitmask
+
+#     # Ensure the color is in the correct format (B, G, R)
+#     color = tuple(int(c) for c in color)
+
+#     # Create an overlay where the mask is true
+#     overlay = np.zeros_like(image, dtype=np.uint8)
+#     overlay[mask == 1] = color
+
+#     # Create a mask where the overlay is applied
+#     mask_indices = mask == 1
+
+#     # Blend only the overlay with the original image
+#     image[mask_indices] = cv2.addWeighted(overlay[mask_indices], alpha, image[mask_indices], 1 - alpha, 0)
+#     return image
