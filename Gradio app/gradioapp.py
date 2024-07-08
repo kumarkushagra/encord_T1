@@ -3,14 +3,12 @@ import os
 from PIL import Image
 
 # Set the directories containing your images
-left_image_dir = r"D:\Panacea\Encord\encord_T1\dataset\JPG files"
-right_image_dir = r"D:\Panacea\Encord\encord_T1\dataset\mask"
+original_image_dir = r"D:\Panacea\Encord\encord_T1\dataset\JPG files"
+masked_image_dir = r"D:\Panacea\Encord\encord_T1\dataset\mask"
 
-#This is the basic structure of gradio app
-
-# Get a sorted list of image file paths for each directory
-left_image_files = sorted([os.path.join(left_image_dir, img) for img in os.listdir(left_image_dir) if img.endswith(('png', 'jpg', 'jpeg'))])
-right_image_files = sorted([os.path.join(right_image_dir, img) for img in os.listdir(right_image_dir) if img.endswith(('png', 'jpg', 'jpeg'))])
+# Get sorted lists of image file names from each directory
+original_images = sorted([img for img in os.listdir(original_image_dir) if img.endswith(('png', 'jpg', 'jpeg'))])
+masked_images = sorted([img for img in os.listdir(masked_image_dir) if img.endswith(('png', 'jpg', 'jpeg'))])
 
 # Function to resize images to fit within a specific size
 def resize_image(image_path, size=(600, 600)):
@@ -20,55 +18,61 @@ def resize_image(image_path, size=(600, 600)):
         img.save(resized_path)
         return resized_path
 
-def display_images(left_index, right_index):
-    # Ensure the indices are within bounds
-    left_index = max(0, min(left_index, len(left_image_files) - 1))
-    right_index = max(0, min(right_index, len(right_image_files) - 1))
+def create_black_image(size=(600, 600)):
+    black_image = Image.new("RGB", size, (0, 0, 0))
+    black_image_path = "black_image.jpg"
+    black_image.save(black_image_path)
+    return black_image_path
+
+def display_images(index):
+    # Ensure the index is within bounds
+    index = max(0, min(index, len(original_images) - 1))
     
-    # Resize and get paths of images
-    img1 = resize_image(left_image_files[left_index])
-    img2 = resize_image(right_image_files[right_index])
-    return img1, img2, left_index, right_index
+    # Paths to the original and masked images
+    original_image_path = os.path.join(original_image_dir, original_images[index])
+    masked_image_path = os.path.join(masked_image_dir, original_images[index])
+    
+    # Resize original image
+    original_img = resize_image(original_image_path)
+    
+    # Check if the masked image exists and resize it, or create a black image
+    if os.path.exists(masked_image_path):
+        masked_img = resize_image(masked_image_path)
+    else:
+        masked_img = create_black_image()
+    
+    return original_img, masked_img, index
 
-def next_images(left_index, right_index):
-    left_index += 1
-    right_index += 1
-    if left_index >= len(left_image_files):
-        left_index = len(left_image_files) - 1
-    if right_index >= len(right_image_files):
-        right_index = len(right_image_files) - 1
-    return display_images(left_index, right_index)
+def next_images(index):
+    index += 1
+    if index >= len(original_images):
+        index = len(original_images) - 1
+    return display_images(index)
 
-def prev_images(left_index, right_index):
-    left_index -= 1
-    right_index -= 1
-    if left_index < 0:
-        left_index = 0
-    if right_index < 0:
-        right_index = 0
-    return display_images(left_index, right_index)
+def prev_images(index):
+    index -= 1
+    if index < 0:
+        index = 0
+    return display_images(index)
 
 # Initialize with the first pair of images
-img1, img2, left_index, right_index = display_images(0, 0)
+original_img, masked_img, index = display_images(0)
 
 # Define the Gradio interface
 with gr.Blocks() as demo:
     with gr.Row():
-        with gr.Column():
-            image1 = gr.Image(value=img1, label="Left Image").style(width=600, height=600)
-        with gr.Column():
-            image2 = gr.Image(value=img2, label="Right Image").style(width=600, height=600)
+        image1 = gr.Image(value=original_img, label="Original Image").style(width=600, height=600)
+        image2 = gr.Image(value=masked_img, label="Masked Image").style(width=600, height=600)
     
     with gr.Row():
         prev_btn = gr.Button("Prev")
         next_btn = gr.Button("Next")
 
-    left_state = gr.State(left_index)
-    right_state = gr.State(right_index)
+    state = gr.State(index)
     
     # Update the images on button click
-    prev_btn.click(prev_images, inputs=[left_state, right_state], outputs=[image1, image2, left_state, right_state])
-    next_btn.click(next_images, inputs=[left_state, right_state], outputs=[image1, image2, left_state, right_state])
+    prev_btn.click(prev_images, inputs=state, outputs=[image1, image2, state])
+    next_btn.click(next_images, inputs=state, outputs=[image1, image2, state])
 
 # Launch the app
 demo.launch()
