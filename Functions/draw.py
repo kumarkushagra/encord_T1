@@ -37,7 +37,7 @@ def draw_bbox(image,color, boundingBox):
     h = int(boundingBox["h"] * height)
     # Draw the bounding box on the image with transparency
     overlay = image.copy()
-    cv2.rectangle(overlay, (x, y), (x+w, y+h), color[:3], thickness=1)
+    cv2.rectangle(overlay, (x, y), (x+w, y+h), color[:3], thickness=2)
     cv2.addWeighted(overlay, alpha, image, 1 -alpha, 0, image)
 
 
