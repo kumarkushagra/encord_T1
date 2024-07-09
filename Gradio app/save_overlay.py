@@ -5,6 +5,8 @@ def overlay_images(image_path1, image_path2, alpha=0.5, beta=0.5, gamma=0):
     image1 = cv2.imread(image_path1)
     image2 = cv2.imread(image_path2)
     
+
+    brain_image = cv2.imread("D:/PROJECT/encord_T1/dataset/JPG files/457 CT 2.55mm_17.jpg")
     # Check if images are loaded properly
     if image1 is None:
         print(f"Error loading image1 from {image_path1}")
@@ -19,6 +21,7 @@ def overlay_images(image_path1, image_path2, alpha=0.5, beta=0.5, gamma=0):
     
     # Overlay the images
     overlay = cv2.addWeighted(image1, alpha, image2, beta, gamma)
+    # overlay = cv2.addWeighted(brain_image,0.5,overlay,0.75,gamma)
     
     # Display the result
     cv2.imshow('Overlay', overlay)
