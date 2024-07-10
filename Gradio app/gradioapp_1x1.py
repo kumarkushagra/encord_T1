@@ -22,6 +22,7 @@ dir3 = 'D:/PROJECT/encord_T1/dataset/JPG files'
 image_triplets = get_image_pairs(dir1, dir2, dir3)
 index = 0
 
+
 with gr.Blocks() as demo:
     with gr.Row():
         annotated_image_output1 = gr.AnnotatedImage(
