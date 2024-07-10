@@ -26,19 +26,19 @@ def process_annotations(image, objects):
 
         if labels["shape"] == "bitmask":
             draw_bitmask(image,color,labels["bitmask"])
-        elif labels["shape"] == "bounding_box":
-            draw_bbox(image,color,labels["boundingBox"])
+        # elif labels["shape"] == "bounding_box":
+        #     draw_bbox(image,color,labels["boundingBox"])
         
-        # OTHER FUNCTIONS PENDING
+        # # OTHER FUNCTIONS PENDING
         
-        elif labels["shape"] == "polygon":
-            draw_polygon(image,color,labels["polygon"])
-        elif labels["shape"] == "polyline":
-            draw_polyline(image,color,labels["polyline"])
-        elif labels["shape"] == "keypoint":
-            draw_keypoint(image,color,labels["keypoint"])
-        elif labels["shape"] == "rotatable_rectangle":
-            draw_Rbox(image,color,labels["rotatable_rectangle"])
+        # elif labels["shape"] == "polygon":
+        #     draw_polygon(image,color,labels["polygon"])
+        # elif labels["shape"] == "polyline":
+        #     draw_polyline(image,color,labels["polyline"])
+        # elif labels["shape"] == "keypoint":
+        #     draw_keypoint(image,color,labels["keypoint"])
+        # elif labels["shape"] == "rotatable_rectangle":
+        #     draw_Rbox(image,color,labels["rotatable_rectangle"])
     
 
 
