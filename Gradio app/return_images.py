@@ -8,8 +8,8 @@ def numerical_sort(value):
     return [int(part) if part.isdigit() else part for part in parts]
 
 def get_image_pairs(blank_size=(512, 512)):
-    dir1 = r'D:\PROJECT\encord_T1\dataset\JPG files'
-    dir2 = r'D:\PROJECT\encord_T1\dataset\mask'
+    dir1 = r'.\dataset\JPG files'
+    dir2 = r'.\dataset\mask'
 
     image_pairs = []
 
