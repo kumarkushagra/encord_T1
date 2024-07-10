@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Download Page</title>
 </head>
 <body>
-    <h1>Welcome to the Homepage</h1>
-    <button onclick="window.location.href='/download'">Download</button>
-    <button onclick="window.location.href='/testing'">Testing</button>
+    <h1>Download Page</h1>
+    <form action="/submit" method="post" enctype="multipart/form-data">
+        <label for="jsonFile">Upload JSON File:</label>
+        <input type="file" id="jsonFile" name="jsonFile" accept=".json"><br><br>
+        
+        <!-- <label for="directoryPath">Directory Path:</label>
+        <input type="text" id="directoryPath" name="directoryPath"><br><br> -->
+        
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
