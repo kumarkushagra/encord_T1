@@ -69,6 +69,12 @@ def main(json_path, dataset_dir):
                         record[3] = "No"
                         record[4] = "False"
                         record[6] = "False"
+
+                        mask_name = study['data_title']
+                        mask_name += f"_{key}.jpg"
+                        mask_path_temp = f"{mask_dir}{mask_name}"
+                        cv2.imwrite(mask_path_temp, image)
+                        
                     elif objects:
                         record[3] = "Yes"
                         mask_name = study['data_title']
