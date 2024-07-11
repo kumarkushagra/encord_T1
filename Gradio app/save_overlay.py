@@ -1,34 +1,23 @@
 import cv2
+from PIL import Image
+import numpy as np
 
-def overlay_images(image_path1, image_path2, alpha=0.5, beta=0.5, gamma=0):
+def overlay_images(image_path1, alpha=0.5, beta=0.5, gamma=0):
     # Read the images
-    image1 = cv2.imread(image_path1)
-    image2 = cv2.imread(image_path2)
     
+    prediction_image = Image.open(image_path1).convert("L")
+    prediction_array = np.array(prediction_image)
+    prediction_array = np.where(prediction_array < 25, 0, prediction_array)
 
-    brain_image = cv2.imread("D:/PROJECT/encord_T1/dataset/JPG files/457 CT 2.55mm_17.jpg")
-    # Check if images are loaded properly
-    if image1 is None:
-        print(f"Error loading image1 from {image_path1}")
-        return
-    if image2 is None:
-        print(f"Error loading image2 from {image_path2}")
-        return
-    
-    # Resize image2 to match image1 dimensions if necessary
-    if image1.shape != image2.shape:
-        image2 = cv2.resize(image2, (image1.shape[1], image1.shape[0]))
-    
-    # Overlay the images
-    overlay = cv2.addWeighted(image1, alpha, image2, beta, gamma)
-    # overlay = cv2.addWeighted(brain_image,0.5,overlay,0.75,gamma)
-    
+
+    print(type(prediction_array))
+    print(prediction_array)
     # Display the result
-    cv2.imshow('Overlay', overlay)
+    cv2.imshow('mask_array', prediction_array)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 # Example usage
-image1='D:/PROJECT/encord_T1/dataset/mask/457 CT 2.55mm_18.jpg'
-image2='D:/PROJECT/encord_T1/dataset/mask/457 CT 2.55mm_17.jpg'
-overlay_images(image1,image2)
+image1='D:/PROJECT/encord_T1/dataset/predicted_mask/457 CT 2.55mm_18.jpg'
+
+overlay_images(image1)

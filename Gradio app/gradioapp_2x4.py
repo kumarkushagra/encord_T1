@@ -17,9 +17,9 @@ def next_images(index, pairs):
     return annotated_images + [index]
 
 # Modify this to get the entire array of matching pairs
-dir1 = 'D:/PROJECT/encord_T1/dataset/mask'
-dir2 = 'D:/PROJECT/encord_T1/dataset/mask'
-dir3 = 'D:/PROJECT/encord_T1/dataset/JPG files'
+dir1 = 'dataset/mask'
+dir2 = 'dataset/predicted_mask'
+dir3 = 'dataset/JPG files'
 image_triplets = get_image_pairs(dir1, dir2, dir3)
 index = 0
 
@@ -28,22 +28,22 @@ with gr.Blocks() as demo:
     # Create the annotated image outputs
         annotated_image_output1 = gr.AnnotatedImage(
             value=annotate_image(index, image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 1"
         )
         annotated_image_output2 = gr.AnnotatedImage(
             value=annotate_image((index + 1) % len(image_triplets), image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 2"
         )
         annotated_image_output3 = gr.AnnotatedImage(
             value=annotate_image((index + 2) % len(image_triplets), image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 3"
         )
         annotated_image_output4 = gr.AnnotatedImage(
             value=annotate_image((index + 3) % len(image_triplets), image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 4"
         )
 
@@ -52,22 +52,22 @@ with gr.Blocks() as demo:
 
         annotated_image_output5 = gr.AnnotatedImage(
             value=annotate_image((index + 4) % len(image_triplets), image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 5"
         )
         annotated_image_output6 = gr.AnnotatedImage(
             value=annotate_image((index + 5) % len(image_triplets), image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 6"
         )
         annotated_image_output7 = gr.AnnotatedImage(
             value=annotate_image((index + 6) % len(image_triplets), image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 7"
         )
         annotated_image_output8 = gr.AnnotatedImage(
             value=annotate_image((index + 7) % len(image_triplets), image_triplets),
-            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF"},
+            color_map={"Prediction": "#FF0000", "Ground_Truth": "#0000FF","Base image":"#FFFFFF"},
             label="Annotated Image 8"
         )
     

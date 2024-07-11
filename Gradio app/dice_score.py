@@ -1,51 +1,76 @@
+import pandas as pd
 import numpy as np
-from PIL import Image
 import cv2
+import os
+import csv
 
-def dice_score(true_annotations_path, model_predictions_path):
-    """
-    Calculate the Dice score between two images after converting them to binary masks.
 
-    Parameters:
-    true_annotations_path (str): Path to the ground truth image.
-    model_predictions_path (str): Path to the predicted image.
+def dice_score(image_path1, image_path2):
+    # Print the names of the images
+    name = os.path.basename(image_path1)
 
-    Returns:
-    float: Dice coefficient.
-    """
-    # Load and convert images to numpy arrays
-    true_annotations = np.array(Image.open(true_annotations_path))
-    model_predictions = np.array(Image.open(model_predictions_path))
+    image_path1 = image_path1.replace('\\', '/')
+    image_path2 = image_path2.replace('\\', '/')
+    # Read the images
+    img1 = cv2.imread(image_path1, cv2.IMREAD_GRAYSCALE)
+    img2 = cv2.imread(image_path2, cv2.IMREAD_GRAYSCALE)
 
-    # Check if the dimensions match
-    if true_annotations.shape != model_predictions.shape:
-        raise ValueError("Input images must have the same dimensions")
+    # Convert images to binary
+    _, binary_img1 = cv2.threshold(img1, 10, 255, cv2.THRESH_BINARY)
+    _, binary_img2 = cv2.threshold(img2, 30, 255, cv2.THRESH_BINARY)
+    
+    # Convert binary images to binary arrays
+    binary_array1 = binary_img1 // 255  # This will convert the image to 0s and 1s
+    binary_array2 = binary_img2 // 255  # This will convert the image to 0s and 1s
 
-    # Convert to binary masks
-    true_annotations_bin = np.logical_not(np.any(true_annotations <= 10, axis=-1)).astype(np.uint8) * 255
-    model_predictions_bin = np.logical_not(np.any(model_predictions <= 10, axis=-1)).astype(np.uint8) * 255
-
-    # Display binary images
-    # cv2.imshow('True Annotations Binary', true_annotations_bin)
-    # cv2.imshow('Model Predictions Binary', model_predictions_bin)
+    # # Display the binary images
+    # display_img1 = binary_array1 * 255
+    # display_img2 = binary_array2 * 255
+    # cv2.imshow('Binary Image 1', display_img1)
+    # cv2.imshow('Binary Image 2', display_img2)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
 
-    # Calculate Dice score
-    true_annotations_bin = true_annotations_bin.astype(bool)
-    model_predictions_bin = model_predictions_bin.astype(bool)
-    intersection = np.logical_and(true_annotations_bin, model_predictions_bin).sum()
-    union = true_annotations_bin.sum() + model_predictions_bin.sum()
-
+    binary_array1 = binary_array1.astype(bool)
+    binary_array2 = binary_array2.astype(bool)
+    intersection = np.logical_and(binary_array1, binary_array2).sum()
+    union = binary_array1.sum() + binary_array2.sum()
     if union == 0:
-        return 1.0
+        return 1.0, name
 
-    dice = 2 * intersection / union
-    return dice 
+    dice_score = 2 * intersection / union
+    return dice_score , name
 
-# Example usage
-true_annotations_path = 'D:/PROJECT/encord_T1/dataset/mask/457 CT 2.55mm_18.jpg'
-model_predictions_path = 'D:/PROJECT/encord_T1/dataset/mask/457 CT 2.55mm_17.jpg'
+if __name__ == "__main__":  
+    
+    # Define directories
+    mask_dir = "D:/PROJECT/encord_T1/dataset/mask"
+    predicted_mask_dir = "D:/PROJECT/encord_T1/dataset/predicted_mask"
 
-dice = dice_score(true_annotations_path, model_predictions_path)
-print(f"DIce Score: {dice}")
+    # Get sorted file lists with full paths
+    files1 = sorted([os.path.normpath(os.path.join(mask_dir, f)) for f in os.listdir(mask_dir) if os.path.isfile(os.path.join(mask_dir, f))])
+    files2 = sorted([os.path.normpath(os.path.join(predicted_mask_dir, f)) for f in os.listdir(predicted_mask_dir) if os.path.isfile(os.path.join(predicted_mask_dir, f))])
+
+    # Create pairs of corresponding files with full paths
+    pairs = [[files1[i], files2[i]] for i in range(len(files1))]
+
+    # Display the result
+    print(pairs[0])
+    # Creating CSV if not present
+    filename = 'Dice_scores.csv'
+    header = ['File name', 'Dice score']
+    # Check if the file exists
+    if not os.path.isfile(filename):
+        # File doesn't exist, create a new CSV with headers
+        with open(filename, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(header)
+        
+
+
+    for img1 , img2 in pairs:
+        score , name= dice_score(img1, img2)
+        print(score,name)
+        with open(filename, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([name,score])

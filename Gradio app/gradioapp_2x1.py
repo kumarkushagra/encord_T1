@@ -19,9 +19,9 @@ def next_images(index, pairs):
     return [annotated_image_1, annotated_image_2, index2]
 
 # Modify this to get the entire array of matching pairs
-dir1 = 'D:/PROJECT/encord_T1/dataset/mask'
-dir2 = 'D:/PROJECT/encord_T1/dataset/mask'
-dir3 = 'D:/PROJECT/encord_T1/dataset/JPG files'
+dir1 = 'dataset/mask'
+dir2 = 'dataset/predicted_mask'
+dir3 = 'dataset/JPG files'
 image_triplets = get_image_pairs(dir1, dir2, dir3)
 index = 0
 
