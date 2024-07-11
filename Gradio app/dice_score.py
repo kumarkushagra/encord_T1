@@ -44,8 +44,8 @@ def dice_score(image_path1, image_path2):
 if __name__ == "__main__":  
     
     # Define directories
-    mask_dir = "D:/PROJECT/encord_T1/dataset/mask"
-    predicted_mask_dir = "D:/PROJECT/encord_T1/dataset/predicted_mask"
+    mask_dir = "dataset/mask"
+    predicted_mask_dir = "dataset/predicted_mask"
 
     # Get sorted file lists with full paths
     files1 = sorted([os.path.normpath(os.path.join(mask_dir, f)) for f in os.listdir(mask_dir) if os.path.isfile(os.path.join(mask_dir, f))])
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # Display the result
     print(pairs[0])
     # Creating CSV if not present
-    filename = 'Dice_scores.csv'
+    filename = 'Dice_score.csv'
     header = ['File name', 'Dice score']
     # Check if the file exists
     if not os.path.isfile(filename):
@@ -70,7 +70,13 @@ if __name__ == "__main__":
 
     for img1 , img2 in pairs:
         score , name= dice_score(img1, img2)
-        print(score,name)
+        print(f"Dice score:{score}, Name: {name}")
         with open(filename, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([name,score])
+
+    df = pd.read_csv(filename)
+    average = df["Dice score"].mean()
+    with open(filename, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Average",average])
