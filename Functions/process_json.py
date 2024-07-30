@@ -5,10 +5,10 @@ import csv
 import os
 import concurrent.futures
 
-from load_json_data import load_json_data
-from create_mask import process_annotations
-from download import *
-from update_CSV import append_row_to_csv
+from .load_json_data import load_json_data
+from .create_mask import process_annotations
+from .download import *
+from .update_CSV import append_row_to_csv
 
 def main(json_path, dataset_dir):
     # READ JSON FILE

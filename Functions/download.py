@@ -3,7 +3,7 @@ import requests
 import pydicom
 import cv2
 
-from DCM_to_JPG import *
+from .DCM_to_JPG import *
 
 
 

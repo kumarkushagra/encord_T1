@@ -12,8 +12,8 @@ import numpy as np
 import cv2
 from matplotlib import pyplot as plt
 
-from rgb_converter import hex_to_rgb
-from draw import *
+from .rgb_converter import hex_to_rgb
+from .draw import *
 
 
 def process_annotations(image, objects):
