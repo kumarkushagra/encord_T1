@@ -5,7 +5,9 @@
 ### Main Components
 - **json file**: Configuration and settings file for the project.
 
-- **main.py**: The main script that orchestrates the workflow by calling various functions from the functions directory.
+- **main.py**: The main script that orchestrates the workflow by calling various functions from the functions directory. (This is still incomplete)
+
+- **Make sure that in `functions` directory, `process_json` has been executed and then, run the `gradioapp_2x4.py` in dir == `Gradio app`**
 
 ### Functions Directory
 Contains all the necessary functions that `main.py` will call.
