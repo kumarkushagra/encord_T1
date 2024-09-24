@@ -42,10 +42,12 @@ def get_image_pairs(dir1, dir2, dir3, placeholder_path='black_image.jpg'):
     # Example usage
 if __name__=="__main__":
     dir1 = 'D:/PROJECT/encord_T1/dataset/mask'
-    dir2 = 'dataset/predicted_mask'
+    dir2 = 'D:/PROJECT/encord_T1/dataset/predicted_mask'
     dir3 = 'D:/PROJECT/encord_T1/dataset/JPG files'
     output_array = get_image_pairs(dir1, dir2, dir3)
 
-    print(output_array)
+    # print(output_array)
+    for triplet in output_array:
+        print(triplet)
     # json_file_path="D:/result.json"
     # store_nested_array_to_json(json_file_path, output_array)
